@@ -20,7 +20,7 @@
 
 <br/>
 
-[Preview Here](https://mstfa-ai.vercel.app/)
+CLICK HERE TO SEE MY CHATBOT LIVE --> [Preview Here](https://mstfa-ai.vercel.app/)
 
 </div>
 

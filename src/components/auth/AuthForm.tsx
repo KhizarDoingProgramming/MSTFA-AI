@@ -29,17 +29,12 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
         if (authError) throw authError
         if (!data.session) throw new Error('No session created')
       } else {
-        const { data, error: authError } = await supabase.auth.signUp({
+        const { error: authError } = await supabase.auth.signUp({
           email,
           password,
           options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
         })
         if (authError) throw authError
-        if (data.user && !data.session) {
-          setError('Check your email to confirm your account!')
-          setLoading(false)
-          return
-        }
       }
 
       window.location.replace('/chat')

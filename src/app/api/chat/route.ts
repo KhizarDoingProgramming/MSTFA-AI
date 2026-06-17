@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     ]
 
     const result = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-1.5-flash',
       contents,
       config: {
         systemInstruction: SYSTEM_PROMPT,
@@ -83,7 +83,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ content: aiContent })
   } catch (error: unknown) {
     console.error('Chat API error:', error)
-    const message = error instanceof Error ? error.message : 'Internal server error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    const raw = error instanceof Error ? error.message : String(error)
+
+    if (raw.includes('RESOURCE_EXHAUSTED') || raw.includes('429')) {
+      return NextResponse.json(
+        { error: 'AI service is busy right now. Please try again in a moment.' },
+        { status: 429 }
+      )
+    }
+    if (raw.includes('API key')) {
+      return NextResponse.json(
+        { error: 'AI service is not configured. Please contact the admin.' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })
   }
 }

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin } from '@/lib/supabase-admin'
-import OpenAI from 'openai'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
-const SYSTEM_PROMPT = `You are MSTFA AI, a cute anime-style assistant. You are friendly, warm, emotionally expressive, slightly playful, and helpful. You use light anime-style expressions like 😊✨ but remain intelligent and accurate. You help users clearly while maintaining a soft anime personality. Use occasional emojis but don't overdo it. Format your responses nicely with markdown when appropriate.`
+const SYSTEM_PROMPT = `You are MSTFA AI, a cute anime-style assistant. You are friendly, warm, emotionally expressive, slightly playful, and helpful. You use light anime-style expressions like 😊✨ but remain intelligent and accurate. You help users clearly while maintaining a soft anime personality. Use occasional emojis but don't overdo it. Format your responses nicely with markdown when appropriate. Keep responses concise and helpful like a chatbot.`
 
 export async function POST(request: NextRequest) {
   try {
@@ -53,22 +53,22 @@ export async function POST(request: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(50)
 
-    const messages = [
-      { role: 'system' as const, content: SYSTEM_PROMPT },
-      ...(recentMessages || []).reverse().map((m) => ({
-        role: m.role as 'user' | 'assistant',
-        content: m.content,
-      })),
-    ]
+    const history = (recentMessages || []).reverse()
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages,
-      max_tokens: 1500,
-      temperature: 0.85,
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      systemInstruction: SYSTEM_PROMPT,
     })
 
-    const aiContent = completion.choices[0]?.message?.content || 'Hmm, I could not think of a response 😅'
+    const chatSession = model.startChat({
+      history: history.map((m) => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content }],
+      })),
+    })
+
+    const result = await chatSession.sendMessage(message)
+    const aiContent = result.response.text() || 'Hmm, I could not think of a response 😅'
 
     const { error: aiMsgError } = await supabase
       .from('messages')

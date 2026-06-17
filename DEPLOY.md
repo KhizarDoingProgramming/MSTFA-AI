@@ -1,4 +1,4 @@
-# 🌸 MSTFA AI — Deployment Guide
+# MSTFA AI — Deployment Guide
 
 ## Quick Deploy to Vercel
 
@@ -11,11 +11,12 @@
    - **Anon Key** → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - **Service Role Key** → `SUPABASE_SERVICE_ROLE_KEY`
 
-### 2. Get OpenAI API Key
+### 2. Get Gemini API Key (FREE)
 
-1. Go to [platform.openai.com](https://platform.openai.com)
-2. Create an API key
-3. Copy it → `OPENAI_API_KEY`
+1. Go to [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
+2. Click **Create API Key**
+3. Copy it → `GEMINI_API_KEY`
+4. Free tier: 15 requests/min, 1M tokens/day
 
 ### 3. Deploy to Vercel
 
@@ -26,7 +27,7 @@
    NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbG...
    SUPABASE_SERVICE_ROLE_KEY=eyJhbG...
-   OPENAI_API_KEY=sk-...
+   GEMINI_API_KEY=AIza...
    ```
 4. Click **Deploy**
 
@@ -55,45 +56,6 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## Project Structure
-
-```
-mstfa-ai/
-├── src/
-│   ├── app/
-│   │   ├── api/chat/route.ts       # OpenAI API endpoint
-│   │   ├── auth/callback/route.ts  # Supabase auth callback
-│   │   ├── chat/page.tsx           # Main chat interface
-│   │   ├── login/page.tsx          # Login page
-│   │   ├── signup/page.tsx         # Signup page
-│   │   ├── page.tsx                # Landing page
-│   │   ├── layout.tsx              # Root layout
-│   │   └── globals.css             # Global styles
-│   ├── components/
-│   │   ├── auth/AuthForm.tsx       # Auth form component
-│   │   ├── chat/ChatSidebar.tsx    # Chat history sidebar
-│   │   ├── chat/ChatInput.tsx      # Message input bar
-│   │   ├── chat/MessageBubble.tsx  # Chat message bubble
-│   │   ├── ui/Sparkles.tsx         # Animated sparkles
-│   │   ├── ui/TypingIndicator.tsx  # Bouncing dots loader
-│   │   ├── ui/AnimeAvatar.tsx      # Avatar component
-│   │   └── ui/PastelInput.tsx      # Styled input component
-│   ├── lib/
-│   │   ├── supabase.ts             # Client Supabase
-│   │   ├── supabase-admin.ts       # Admin Supabase
-│   │   ├── supabase-server.ts      # Server Supabase
-│   │   └── utils.ts                # Utility functions
-│   ├── types/
-│   │   ├── index.ts                # App types
-│   │   └── database.ts             # Supabase DB types
-│   └── middleware.ts               # Route protection
-├── supabase/
-│   └── schema.sql                  # Database schema
-├── tailwind.config.ts
-├── next.config.mjs
-└── package.json
-```
-
 ## Environment Variables
 
 | Variable | Description | Where to get |
@@ -101,7 +63,7 @@ mstfa-ai/
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | Supabase Dashboard → Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key | Supabase Dashboard → Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | Supabase Dashboard → Settings → API |
-| `OPENAI_API_KEY` | OpenAI API key | platform.openai.com → API Keys |
+| `GEMINI_API_KEY` | Google Gemini API key (free) | aistudio.google.com/apikey |
 
 ## Tech Stack
 
@@ -110,9 +72,9 @@ mstfa-ai/
 - **Styling:** Tailwind CSS
 - **Database:** Supabase (PostgreSQL + RLS)
 - **Auth:** Supabase Auth
-- **AI:** OpenAI GPT-4o-mini
+- **AI:** Google Gemini 1.5 Flash (free tier)
 - **Deployment:** Vercel
 
 ---
 
-🌸 Built with love — MSTFA AI
+Built with love — MSTFA AI

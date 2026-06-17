@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin } from '@/lib/supabase-admin'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenAI } from '@google/genai'
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
 
 const SYSTEM_PROMPT = `You are MSTFA AI, a cute anime-style assistant. You are friendly, warm, emotionally expressive, slightly playful, and helpful. You use light anime-style expressions like 😊✨ but remain intelligent and accurate. You help users clearly while maintaining a soft anime personality. Use occasional emojis but don't overdo it. Format your responses nicely with markdown when appropriate. Keep responses concise and helpful like a chatbot.`
 
@@ -55,20 +55,22 @@ export async function POST(request: NextRequest) {
 
     const history = (recentMessages || []).reverse()
 
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
-      systemInstruction: SYSTEM_PROMPT,
-    })
-
-    const chatSession = model.startChat({
-      history: history.map((m) => ({
-        role: m.role === 'assistant' ? 'model' : 'user',
+    const contents = [
+      ...history.map((m) => ({
+        role: m.role === 'assistant' ? 'model' as const : 'user' as const,
         parts: [{ text: m.content }],
       })),
+    ]
+
+    const result = await ai.models.generateContent({
+      model: 'gemini-2.0-flash',
+      contents,
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+      },
     })
 
-    const result = await chatSession.sendMessage(message)
-    const aiContent = result.response.text() || 'Hmm, I could not think of a response 😅'
+    const aiContent = result.text || 'Hmm, I could not think of a response 😅'
 
     const { error: aiMsgError } = await supabase
       .from('messages')

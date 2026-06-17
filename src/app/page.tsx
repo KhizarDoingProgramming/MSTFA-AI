@@ -99,7 +99,7 @@ export default function LandingPage() {
           <div className="flex flex-wrap items-center justify-center gap-3 mt-12">
             {[
               { emoji: '💬', text: 'Persistent Chats' },
-              { emoji: '🧠', text: 'Powered by GPT' },
+              { emoji: '🧠', text: 'Made by MUSTAFA' },
               { emoji: '🔒', text: 'Secure & Private' },
               { emoji: '🌸', text: 'Anime Personality' },
               { emoji: '📱', text: 'Mobile Friendly' },

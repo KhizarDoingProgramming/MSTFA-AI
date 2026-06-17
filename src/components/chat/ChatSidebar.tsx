@@ -56,13 +56,13 @@ export default function ChatSidebar({
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 lg:hidden"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
           onClick={onToggle}
         />
       )}
 
       <aside
-        className={`fixed lg:relative z-40 h-full w-72 bg-white/70 dark:bg-gray-900/80 backdrop-blur-xl border-r border-white/40 dark:border-purple-900/20 flex flex-col transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        className={`fixed z-40 h-full w-72 bg-white/70 dark:bg-gray-900/80 backdrop-blur-xl border-r border-white/40 dark:border-purple-900/20 flex flex-col transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="p-4 border-b border-purple-100/50 dark:border-purple-900/30">
           <div className="flex items-center justify-between mb-4">
@@ -80,7 +80,7 @@ export default function ChatSidebar({
               </button>
               <button
                 onClick={onToggle}
-                className="lg:hidden p-1.5 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/30 text-purple-400"
+                className="p-1.5 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/30 text-purple-400"
               >
                 <ChevronLeft size={18} />
               </button>

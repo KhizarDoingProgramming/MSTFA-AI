@@ -18,7 +18,10 @@ export default function ChatPage() {
   const [activeChatId, setActiveChatId] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(false)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window !== 'undefined') return window.innerWidth >= 1024
+    return false
+  })
   const [userId, setUserId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -196,14 +199,17 @@ export default function ChatPage() {
         <header className="h-16 flex items-center gap-3 px-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border-b border-purple-100/50 dark:border-purple-900/30 flex-shrink-0">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="lg:hidden p-2 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/30 text-purple-400 transition-colors"
+            className="p-2 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/30 text-purple-400 transition-colors"
           >
             <Menu size={20} />
           </button>
-          <div className="flex items-center gap-2">
+          <button
+            onClick={() => window.location.href = '/chat'}
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
             <img src="/logo.svg" alt="MSTFA AI" className="w-7 h-7" />
             <h1 className="font-bold text-purple-700 dark:text-purple-300">MSTFA AI</h1>
-          </div>
+          </button>
           {activeChatId && (
             <span className="text-xs text-purple-300 dark:text-purple-500 ml-2 hidden sm:inline">
               {chats.find((c) => c.id === activeChatId)?.title}

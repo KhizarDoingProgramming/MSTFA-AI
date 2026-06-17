@@ -29,12 +29,12 @@ export default function LandingPage() {
       <div className="absolute top-40 right-20 w-96 h-96 bg-purple-200/25 dark:bg-purple-900/10 rounded-full blur-3xl" />
       <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-blue-200/25 dark:bg-blue-900/10 rounded-full blur-3xl" />
 
-      <nav className="relative z-10 flex items-center justify-between px-6 md:px-12 py-5">
-        <div className="flex items-center gap-2">
+      <nav className="relative z-10 flex items-center justify-between px-4 sm:px-6 md:px-12 py-4 sm:py-5">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <img src="/logo.svg" alt="MSTFA AI" className="w-8 h-8" />
-          <span className="font-bold text-xl text-purple-700 dark:text-purple-300">MSTFA AI</span>
+          <span className="font-bold text-lg sm:text-xl text-purple-700 dark:text-purple-300">MSTFA AI</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <button
             onClick={toggle}
             className="p-2 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/30 text-purple-400 transition-colors"
@@ -44,7 +44,7 @@ export default function LandingPage() {
           {user ? (
             <button
               onClick={() => router.push('/chat')}
-              className="btn-pastel text-sm"
+              className="btn-pastel text-xs sm:text-sm px-3 sm:px-5 py-2"
             >
               Open Chat
             </button>
@@ -52,13 +52,13 @@ export default function LandingPage() {
             <>
               <Link
                 href="/login"
-                className="btn-pastel-outline text-sm px-5 py-2"
+                className="btn-pastel-outline text-xs sm:text-sm px-3 sm:px-5 py-2"
               >
                 Login
               </Link>
               <Link
                 href="/signup"
-                className="btn-pastel text-sm px-5 py-2"
+                className="btn-pastel text-xs sm:text-sm px-3 sm:px-5 py-2"
               >
                 Sign Up
               </Link>
@@ -91,7 +91,7 @@ export default function LandingPage() {
 
           <button
             onClick={() => router.push(user ? '/chat' : '/signup')}
-            className="btn-pastel text-base px-10 py-4 shadow-xl hover:shadow-2xl transition-all duration-300 group"
+            className="btn-pastel text-sm sm:text-base px-6 sm:px-10 py-3 sm:py-4 shadow-xl hover:shadow-2xl transition-all duration-300 group"
           >
             <span className="flex items-center gap-2">
               Start Chatting

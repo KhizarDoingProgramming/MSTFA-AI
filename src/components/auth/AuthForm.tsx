@@ -7,55 +7,37 @@ import PastelInput from '@/components/ui/PastelInput'
 
 export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
   const [email, setEmail] = useState('')
-  const [otp, setOtp] = useState('')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const [otpSent, setOtpSent] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
 
   const isLogin = mode === 'login'
 
-  async function handleSendOtp(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-    setSuccess('')
-
-    try {
-      const supabase = getSupabase()
-      const { error: authError } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          shouldCreateUser: true,
-        },
-      })
-      if (authError) throw authError
-      setOtpSent(true)
-      setSuccess('Code sent! Check your email ✨')
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to send code'
-      setError(message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  async function handleVerifyOtp(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
 
     try {
       const supabase = getSupabase()
-      const { error: authError } = await supabase.auth.verifyOtp({
-        email,
-        token: otp,
-        type: 'email',
-      })
-      if (authError) throw authError
+
+      if (isLogin) {
+        const { error: authError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+        if (authError) throw authError
+      } else {
+        const { error: authError } = await supabase.auth.signUp({
+          email,
+          password,
+        })
+        if (authError) throw authError
+      }
+
       window.location.replace('/chat')
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Invalid code'
+      const message = err instanceof Error ? err.message : 'Something went wrong'
       setError(message)
     } finally {
       setLoading(false)
@@ -79,95 +61,49 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
           </p>
         </div>
 
-        {!otpSent ? (
-          <form onSubmit={handleSendOtp} className="space-y-4">
-            <PastelInput
-              label="Email"
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <PastelInput
+            label="Email"
+            type="email"
+            placeholder="your@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-2 rounded-xl">
-                {error}
-              </div>
+          <PastelInput
+            label="Password"
+            type="password"
+            placeholder="Your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
+          />
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-2 rounded-xl">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-pastel w-full py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                {isLogin ? 'Logging in...' : 'Creating account...'}
+              </span>
+            ) : isLogin ? (
+              'Login ✨'
+            ) : (
+              'Sign Up 🌸'
             )}
-
-            {success && (
-              <div className="bg-green-50 border border-green-200 text-green-600 text-sm px-4 py-2 rounded-xl">
-                {success}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-pastel w-full py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                  Sending code...
-                </span>
-              ) : (
-                'Send Code 🌸'
-              )}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleVerifyOtp} className="space-y-4">
-            <p className="text-sm text-purple-500 text-center">
-              Code sent to <span className="font-semibold">{email}</span>
-            </p>
-
-            <PastelInput
-              label="Enter Code"
-              type="text"
-              placeholder="6-digit code"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-              maxLength={6}
-            />
-
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-2 rounded-xl">
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-pastel w-full py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                  Verifying...
-                </span>
-              ) : (
-                'Verify & Login ✨'
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                setOtpSent(false)
-                setOtp('')
-                setError('')
-                setSuccess('')
-              }}
-              className="w-full text-sm text-purple-400 hover:text-purple-600 transition-colors"
-            >
-              ← Use a different email
-            </button>
-          </form>
-        )}
+          </button>
+        </form>
 
         <div className="text-center mt-6">
           <p className="text-sm text-purple-400">

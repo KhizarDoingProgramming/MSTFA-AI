@@ -46,16 +46,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to save message' }, { status: 500 })
     }
 
-    const { data: history } = await supabase
+    const { data: recentMessages } = await supabase
       .from('messages')
       .select('role, content')
       .eq('chat_id', chatId)
-      .order('created_at', { ascending: true })
+      .order('created_at', { ascending: false })
       .limit(50)
 
     const messages = [
       { role: 'system' as const, content: SYSTEM_PROMPT },
-      ...(history || []).map((m) => ({
+      ...(recentMessages || []).reverse().map((m) => ({
         role: m.role as 'user' | 'assistant',
         content: m.content,
       })),

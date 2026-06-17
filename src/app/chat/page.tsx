@@ -21,7 +21,7 @@ export default function ChatPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userId, setUserId] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const activeChatIdRef = useRef<string | null>(null)
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -42,6 +42,10 @@ export default function ChatPage() {
     scrollToBottom()
   }, [messages, loading, scrollToBottom])
 
+  useEffect(() => {
+    activeChatIdRef.current = activeChatId
+  }, [activeChatId])
+
   async function loadChats(uid: string) {
     const { data } = await getSupabase()
       .from('chats')
@@ -51,9 +55,6 @@ export default function ChatPage() {
 
     if (data) {
       setChats(data)
-      if (data.length > 0 && !activeChatId) {
-        selectChat(data[0].id)
-      }
     }
   }
 
@@ -68,8 +69,8 @@ export default function ChatPage() {
     if (data) setMessages(data)
   }
 
-  async function createChat() {
-    if (!userId) return
+  async function createChat(): Promise<string | null> {
+    if (!userId) return null
     const { data, error } = await getSupabase()
       .from('chats')
       .insert({ user_id: userId, title: 'New Chat ✨' })
@@ -78,9 +79,9 @@ export default function ChatPage() {
 
     if (data && !error) {
       setChats((prev) => [data, ...prev])
-      selectChat(data.id)
-      setSidebarOpen(false)
+      return data.id
     }
+    return null
   }
 
   async function deleteChat(chatId: string) {
@@ -103,25 +104,37 @@ export default function ChatPage() {
   }
 
   async function sendMessage(content: string) {
-    if (!activeChatId || loading) return
+    if (loading) return
+
+    setLoading(true)
+
+    let currentChatId = activeChatIdRef.current
+
+    if (!currentChatId) {
+      currentChatId = await createChat()
+      if (!currentChatId) {
+        setLoading(false)
+        return
+      }
+      setActiveChatId(currentChatId)
+      await selectChat(currentChatId)
+    }
 
     const tempUserMsg: Message = {
       id: `temp-${Date.now()}`,
-      chat_id: activeChatId,
+      chat_id: currentChatId,
       role: 'user',
       content,
       created_at: new Date().toISOString(),
     }
     setMessages((prev) => [...prev, tempUserMsg])
-    setLoading(true)
 
-    // Auto-rename first message
-    const chatMessages = messages
-    if (chatMessages.length === 0) {
+    const currentMessages = messages
+    if (currentMessages.length === 0) {
       const title = generateChatTitle(content)
-      renameChat(activeChatId, title)
+      renameChat(currentChatId, title)
       setChats((prev) =>
-        prev.map((c) => (c.id === activeChatId ? { ...c, title } : c))
+        prev.map((c) => (c.id === currentChatId ? { ...c, title } : c))
       )
     }
 
@@ -135,7 +148,7 @@ export default function ChatPage() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ message: content, chatId: activeChatId }),
+        body: JSON.stringify({ message: content, chatId: currentChatId }),
       })
 
       const data = await res.json()
@@ -144,7 +157,7 @@ export default function ChatPage() {
 
       const aiMsg: Message = {
         id: `ai-${Date.now()}`,
-        chat_id: activeChatId,
+        chat_id: currentChatId,
         role: 'assistant',
         content: data.content,
         created_at: new Date().toISOString(),
@@ -177,9 +190,7 @@ export default function ChatPage() {
         onToggle={() => setSidebarOpen(!sidebarOpen)}
       />
 
-      {/* Main Chat Area */}
       <div className="flex-1 flex flex-col min-w-0 relative z-10">
-        {/* Header */}
         <header className="h-16 flex items-center gap-3 px-4 bg-white/60 backdrop-blur-xl border-b border-purple-100/50 flex-shrink-0">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -198,9 +209,7 @@ export default function ChatPage() {
           )}
         </header>
 
-        {/* Messages */}
         <div
-          ref={scrollContainerRef}
           className="flex-1 overflow-y-auto py-4"
         >
           {messages.length === 0 && !loading && (
@@ -226,8 +235,7 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
-        <ChatInput onSend={sendMessage} disabled={loading || !activeChatId} />
+        <ChatInput onSend={sendMessage} disabled={loading} />
       </div>
     </div>
   )

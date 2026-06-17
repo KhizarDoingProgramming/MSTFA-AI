@@ -31,7 +31,7 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="relative z-10 flex items-center justify-between px-6 md:px-12 py-5">
         <div className="flex items-center gap-2">
-          <span className="text-2xl">🌸</span>
+          <img src="/logo.svg" alt="MSTFA AI" className="w-8 h-8" />
           <span className="font-bold text-xl text-purple-700">MSTFA AI</span>
         </div>
         <div className="flex items-center gap-3">

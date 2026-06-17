@@ -14,7 +14,7 @@ export default function LoginPage() {
 
       <div className="relative z-10 w-full max-w-md">
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-          <span className="text-3xl">🌸</span>
+          <img src="/logo.svg" alt="MSTFA AI" className="w-10 h-10" />
           <span className="font-bold text-2xl text-purple-700">MSTFA AI</span>
         </Link>
 

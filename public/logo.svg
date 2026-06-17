@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fce4ec"/>
+      <stop offset="50%" style="stop-color:#f3e5f5"/>
+      <stop offset="100%" style="stop-color:#e8eaf6"/>
+    </linearGradient>
+    <linearGradient id="petalGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8bbd0"/>
+      <stop offset="100%" style="stop-color:#f48fb1"/>
+    </linearGradient>
+    <linearGradient id="petalGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e1bee7"/>
+      <stop offset="100%" style="stop-color:#ce93d8"/>
+    </linearGradient>
+    <linearGradient id="petalGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#bbdefb"/>
+      <stop offset="100%" style="stop-color:#90caf9"/>
+    </linearGradient>
+    <linearGradient id="centerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff9c4"/>
+      <stop offset="100%" style="stop-color:#fff176"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ec407a"/>
+      <stop offset="50%" style="stop-color:#ab47bc"/>
+      <stop offset="100%" style="stop-color:#5c6bc0"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#ce93d8" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="200" cy="200" r="190" fill="url(#bgGrad)" filter="url(#softShadow)"/>
+  <circle cx="200" cy="200" r="190" fill="none" stroke="url(#petalGrad2)" stroke-width="2" opacity="0.5"/>
+
+  <!-- Sparkle decorations -->
+  <g filter="url(#glow)">
+    <!-- Top left sparkle -->
+    <path d="M80 100 L83 95 L86 100 L91 103 L86 106 L83 111 L80 106 L75 103 Z" fill="#f8bbd0" opacity="0.7"/>
+    <!-- Top right sparkle -->
+    <path d="M300 80 L303 75 L306 80 L311 83 L306 86 L303 91 L300 86 L295 83 Z" fill="#ce93d8" opacity="0.7"/>
+    <!-- Bottom left sparkle -->
+    <path d="M100 310 L103 305 L106 310 L111 313 L106 316 L103 321 L100 316 L95 313 Z" fill="#90caf9" opacity="0.7"/>
+    <!-- Bottom right sparkle -->
+    <path d="M310 300 L313 295 L316 300 L321 303 L316 306 L313 311 L310 306 L305 303 Z" fill="#f48fb1" opacity="0.7"/>
+    <!-- Extra sparkles -->
+    <path d="M60 200 L63 195 L66 200 L71 203 L66 206 L63 211 L60 206 L55 203 Z" fill="#fff176" opacity="0.6"/>
+    <path d="M340 180 L343 175 L346 180 L351 183 L346 186 L343 191 L340 186 L335 183 Z" fill="#f8bbd0" opacity="0.6"/>
+  </g>
+
+  <!-- Sakura Flower -->
+  <g transform="translate(200, 175)" filter="url(#glow)">
+    <!-- Petal 1 - Top -->
+    <ellipse cx="0" cy="-45" rx="22" ry="40" fill="url(#petalGrad1)" opacity="0.9" transform="rotate(0)"/>
+    <!-- Petal 2 - Top Right -->
+    <ellipse cx="0" cy="-45" rx="22" ry="40" fill="url(#petalGrad2)" opacity="0.85" transform="rotate(72)"/>
+    <!-- Petal 3 - Bottom Right -->
+    <ellipse cx="0" cy="-45" rx="22" ry="40" fill="url(#petalGrad3)" opacity="0.85" transform="rotate(144)"/>
+    <!-- Petal 4 - Bottom Left -->
+    <ellipse cx="0" cy="-45" rx="22" ry="40" fill="url(#petalGrad1)" opacity="0.8" transform="rotate(216)"/>
+    <!-- Petal 5 - Top Left -->
+    <ellipse cx="0" cy="-45" rx="22" ry="40" fill="url(#petalGrad2)" opacity="0.85" transform="rotate(288)"/>
+
+    <!-- Center of flower -->
+    <circle cx="0" cy="0" r="18" fill="url(#centerGrad)" filter="url(#glow)"/>
+    <circle cx="-3" cy="-3" r="5" fill="#fff9c4" opacity="0.8"/>
+    <circle cx="4" cy="2" r="3" fill="#fff9c4" opacity="0.6"/>
+
+    <!-- Inner petal details -->
+    <circle cx="0" cy="-12" r="2" fill="#f48fb1" opacity="0.4"/>
+    <circle cx="11" cy="-4" r="2" fill="#ce93d8" opacity="0.4"/>
+    <circle cx="7" cy="10" r="2" fill="#90caf9" opacity="0.4"/>
+    <circle cx="-7" cy="10" r="2" fill="#f48fb1" opacity="0.4"/>
+    <circle cx="-11" cy="-4" r="2" fill="#ce93d8" opacity="0.4"/>
+  </g>
+
+  <!-- Text "MSTFA AI" -->
+  <text x="200" y="290" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="48" font-weight="800" fill="url(#textGrad)" letter-spacing="2">MSTFA AI</text>
+
+  <!-- Subtle tagline -->
+  <text x="200" y="320" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#ce93d8" opacity="0.8" letter-spacing="4">YOUR AI BESTIE</text>
+</svg>

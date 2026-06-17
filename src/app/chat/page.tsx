@@ -188,7 +188,7 @@ export default function ChatPage() {
             <Menu size={20} />
           </button>
           <div className="flex items-center gap-2">
-            <span className="text-xl">🌸</span>
+            <img src="/logo.svg" alt="MSTFA AI" className="w-7 h-7" />
             <h1 className="font-bold text-purple-700">MSTFA AI</h1>
           </div>
           {activeChatId && (

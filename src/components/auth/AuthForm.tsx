@@ -49,8 +49,8 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
     <div className="w-full max-w-md mx-auto">
       <div className="glass-card-strong p-8 md:p-10">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 flex items-center justify-center shadow-lg mb-4 animate-float">
-            <span className="text-4xl">🌸</span>
+          <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 flex items-center justify-center shadow-lg mb-4 animate-float overflow-hidden">
+            <img src="/logo.svg" alt="MSTFA AI" className="w-16 h-16" />
           </div>
           <h1 className="text-2xl font-bold text-purple-800">
             {isLogin ? 'Welcome Back!' : 'Join MSTFA AI!'}

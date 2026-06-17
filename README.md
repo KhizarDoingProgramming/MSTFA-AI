@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🌸 MSTFA AI
+<img src="public/logo.svg" alt="MSTFA AI Logo" width="200" />
+
+# MSTFA AI
 
 ### your cute anime-style AI bestie who actually gets you
 

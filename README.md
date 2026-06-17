@@ -17,7 +17,6 @@
 
 <br/>
 
-![hero](https://i.imgur.com/placeholder.png)
 
 <br/>
 

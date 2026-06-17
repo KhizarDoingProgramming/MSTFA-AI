@@ -22,6 +22,7 @@ export default function ChatPage() {
   const [userId, setUserId] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const activeChatIdRef = useRef<string | null>(null)
+  const loadingRef = useRef(false)
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -46,6 +47,10 @@ export default function ChatPage() {
     activeChatIdRef.current = activeChatId
   }, [activeChatId])
 
+  useEffect(() => {
+    loadingRef.current = loading
+  }, [loading])
+
   async function loadChats(uid: string) {
     const { data } = await getSupabase()
       .from('chats')
@@ -53,13 +58,10 @@ export default function ChatPage() {
       .eq('user_id', uid)
       .order('created_at', { ascending: false })
 
-    if (data) {
-      setChats(data)
-    }
+    if (data) setChats(data)
   }
 
-  async function selectChat(chatId: string) {
-    setActiveChatId(chatId)
+  async function fetchMessages(chatId: string) {
     const { data } = await getSupabase()
       .from('messages')
       .select('*')
@@ -67,6 +69,12 @@ export default function ChatPage() {
       .order('created_at', { ascending: true })
 
     if (data) setMessages(data)
+  }
+
+  async function selectChat(chatId: string) {
+    setActiveChatId(chatId)
+    activeChatIdRef.current = chatId
+    await fetchMessages(chatId)
   }
 
   async function createChat(): Promise<string | null> {
@@ -104,35 +112,35 @@ export default function ChatPage() {
   }
 
   async function sendMessage(content: string) {
-    if (loading) return
-
+    if (loadingRef.current) return
     setLoading(true)
 
     let currentChatId = activeChatIdRef.current
+    const isNewChat = !currentChatId
 
-    if (!currentChatId) {
+    if (isNewChat) {
       currentChatId = await createChat()
       if (!currentChatId) {
         setLoading(false)
         return
       }
       setActiveChatId(currentChatId)
-      await selectChat(currentChatId)
+      activeChatIdRef.current = currentChatId
+      setMessages([])
     }
 
     const tempUserMsg: Message = {
       id: `temp-${Date.now()}`,
-      chat_id: currentChatId,
+      chat_id: currentChatId!,
       role: 'user',
       content,
       created_at: new Date().toISOString(),
     }
     setMessages((prev) => [...prev, tempUserMsg])
 
-    const currentMessages = messages
-    if (currentMessages.length === 0) {
+    if (isNewChat) {
       const title = generateChatTitle(content)
-      renameChat(currentChatId, title)
+      renameChat(currentChatId!, title)
       setChats((prev) =>
         prev.map((c) => (c.id === currentChatId ? { ...c, title } : c))
       )
@@ -155,17 +163,16 @@ export default function ChatPage() {
 
       if (!res.ok) throw new Error(data.error || 'Failed to get response')
 
-      const aiMsg: Message = {
-        id: `ai-${Date.now()}`,
-        chat_id: currentChatId,
-        role: 'assistant',
-        content: data.content,
-        created_at: new Date().toISOString(),
-      }
       setMessages((prev) => [
         ...prev.filter((m) => !m.id.startsWith('temp-')),
         { ...tempUserMsg, id: `user-${Date.now()}` },
-        aiMsg,
+        {
+          id: `ai-${Date.now()}`,
+          chat_id: currentChatId!,
+          role: 'assistant',
+          content: data.content,
+          created_at: new Date().toISOString(),
+        },
       ])
     } catch (error) {
       console.error('Send error:', error)
@@ -209,9 +216,7 @@ export default function ChatPage() {
           )}
         </header>
 
-        <div
-          className="flex-1 overflow-y-auto py-4"
-        >
+        <div className="flex-1 overflow-y-auto py-4">
           {messages.length === 0 && !loading && (
             <div className="flex flex-col items-center justify-center h-full text-center px-4">
               <div className="text-6xl mb-4 animate-float">🌸</div>

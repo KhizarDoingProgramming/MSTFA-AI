@@ -1,54 +1,48 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin } from '@/lib/supabase-admin'
 
-const GEMINI_KEY = process.env.GEMINI_API_KEY
+const GROQ_KEY = process.env.GROQ_API_KEY
 const SYSTEM_PROMPT = `You are MSTFA AI, a cute anime-style assistant. You are friendly, warm, emotionally expressive, slightly playful, and helpful. You use light anime-style expressions like 😊✨ but remain intelligent and accurate. You help users clearly while maintaining a soft anime personality. Use occasional emojis but don't overdo it. Format your responses nicely with markdown when appropriate. Keep responses concise and helpful like a chatbot.`
 
-async function callGemini(userMessage: string, history: { role: string; content: string }[]) {
-  const contents = [
+async function callAI(userMessage: string, history: { role: string; content: string }[]) {
+  const messages = [
+    { role: 'system', content: SYSTEM_PROMPT },
     ...history.map((m) => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }],
+      role: m.role as 'user' | 'assistant',
+      content: m.content,
     })),
-    { role: 'user', parts: [{ text: userMessage }] },
+    { role: 'user' as const, content: userMessage },
   ]
 
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-        contents,
-        generationConfig: {
-          temperature: 0.85,
-          maxOutputTokens: 1500,
-        },
-      }),
-    }
-  )
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${GROQ_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      messages,
+      max_tokens: 1500,
+      temperature: 0.85,
+    }),
+  })
 
   const data = await res.json()
 
   if (!res.ok) {
     const msg = data?.error?.message || JSON.stringify(data)
-    console.error('Gemini API error:', msg)
-    if (msg.includes('RESOURCE_EXHAUSTED') || res.status === 429) {
-      throw new Error('RATE_LIMIT')
-    }
-    if (msg.includes('API key') || res.status === 400) {
-      throw new Error('API_KEY_INVALID')
-    }
+    console.error('Groq API error:', msg)
+    if (res.status === 429) throw new Error('RATE_LIMIT')
     throw new Error(msg)
   }
 
-  return data?.candidates?.[0]?.content?.parts?.[0]?.text || ''
+  return data?.choices?.[0]?.message?.content || ''
 }
 
 export async function POST(request: NextRequest) {
   try {
-    if (!GEMINI_KEY) {
+    if (!GROQ_KEY) {
       return NextResponse.json(
         { error: 'AI service is not configured. Please contact the admin.' },
         { status: 500 }
@@ -102,7 +96,7 @@ export async function POST(request: NextRequest) {
 
     const history = (recentMessages || []).reverse()
 
-    const aiContent = await callGemini(message, history)
+    const aiContent = await callAI(message, history)
 
     if (!aiContent) {
       return NextResponse.json({ error: 'AI returned an empty response' }, { status: 500 })
@@ -123,12 +117,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'AI service is busy right now. Please try again in a moment.' },
         { status: 429 }
-      )
-    }
-    if (error instanceof Error && error.message === 'API_KEY_INVALID') {
-      return NextResponse.json(
-        { error: 'AI service is not configured correctly. Please contact the admin.' },
-        { status: 500 }
       )
     }
     return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })

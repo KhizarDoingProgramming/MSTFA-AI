@@ -11,12 +11,13 @@
    - **Anon Key** → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - **Service Role Key** → `SUPABASE_SERVICE_ROLE_KEY`
 
-### 2. Get Gemini API Key (FREE)
+### 2. Get Groq API Key (FREE)
 
-1. Go to [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
-2. Click **Create API Key**
-3. Copy it → `GEMINI_API_KEY`
-4. Free tier: 15 requests/min, 1M tokens/day
+1. Go to [console.groq.com](https://console.groq.com)
+2. Sign up / Log in
+3. Go to **API Keys** → **Create API Key**
+4. Copy it → `GROQ_API_KEY`
+5. Free tier: 30 requests/min with Llama 3.1 8B
 
 ### 3. Deploy to Vercel
 
@@ -27,7 +28,7 @@
    NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbG...
    SUPABASE_SERVICE_ROLE_KEY=eyJhbG...
-   GEMINI_API_KEY=AIza...
+   GROQ_API_KEY=gsk_...
    ```
 4. Click **Deploy**
 
@@ -63,7 +64,7 @@ Open [http://localhost:3000](http://localhost:3000)
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | Supabase Dashboard → Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key | Supabase Dashboard → Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | Supabase Dashboard → Settings → API |
-| `GEMINI_API_KEY` | Google Gemini API key (free) | aistudio.google.com/apikey |
+| `GROQ_API_KEY` | Groq API key (free) | console.groq.com → API Keys |
 
 ## Tech Stack
 
@@ -72,7 +73,7 @@ Open [http://localhost:3000](http://localhost:3000)
 - **Styling:** Tailwind CSS
 - **Database:** Supabase (PostgreSQL + RLS)
 - **Auth:** Supabase Auth
-- **AI:** Google Gemini 1.5 Flash (free tier)
+- **AI:** Groq / Llama 3.1 8B (free tier)
 - **Deployment:** Vercel
 
 ---

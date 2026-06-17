@@ -62,7 +62,7 @@ export default function ChatSidebar({
       )}
 
       <aside
-        className={`fixed lg:relative z-40 h-full w-72 bg-white/70 dark:bg-gray-900/80 backdrop-blur-xl border-r border-white/40 dark:border-purple-900/20 flex flex-col transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden'}`}
+        className={`fixed lg:relative z-40 h-full w-72 bg-white/70 dark:bg-gray-900/80 backdrop-blur-xl border-r border-white/40 dark:border-purple-900/20 flex flex-col transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         <div className="p-4 border-b border-purple-100/50 dark:border-purple-900/30">
           <div className="flex items-center justify-between mb-4">

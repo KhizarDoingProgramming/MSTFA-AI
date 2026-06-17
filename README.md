@@ -21,7 +21,7 @@
 
 <br/>
 
-**no cap this AI hits different fr fr** 💕
+[Preview Here](https://mstfa-ai.vercel.app/)
 
 </div>
 
@@ -31,13 +31,12 @@
 
 basically MSTFA AI is a vibes-only chat app where you talk to an AI that actually has personality. no boring robotic responses here — she's giving cute anime energy 24/7 ✨
 
-built with **Next.js 14**, **Supabase**, and **OpenAI** — deployed on **Vercel** so it's fast af 🔥
+built with **Next.js 14**, **Supabase**, and **Groq** — deployed on **Vercel** so it's fast af 🔥
 
 ## features go crazy
 
 - 🌸 **anime aesthetic** — pastel colors, sparkles, the whole aesthetic package
 - 💬 **persistent chats** — your conversations don't disappear (we're not like other AIs)
-- 🧠 **GPT-4o-mini brain** — smart but not giving robot energy
 - 🔒 **auth system** — sign up / login with email via Supabase
 - 📱 **mobile friendly** — works on your phone so you can chat from bed
 - ✨ **sparkles everywhere** — because why not
@@ -51,7 +50,7 @@ built with **Next.js 14**, **Supabase**, and **OpenAI** — deployed on **Vercel
 | **TypeScript** | types so we don't crash and cry |
 | **Tailwind CSS** | making things pretty without the struggle |
 | **Supabase** | database + auth (the real MVP) |
-| **OpenAI** | GPT-4o-mini doing the thinking |
+| **Groq** |
 | **Vercel** | hosting so it's always up |
 
 ## getting started (for the devs)
@@ -61,7 +60,6 @@ built with **Next.js 14**, **Supabase**, and **OpenAI** — deployed on **Vercel
 - **Node.js** 18+ (don't be using outdated stuff pls)
 - **npm** or **yarn** or **pnpm** (no judgment)
 - **Supabase** account
-- **OpenAI** API key
 
 ### setup
 
@@ -87,7 +85,6 @@ cp .env.example .env.local
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-OPENAI_API_KEY=sk-your-openai-key
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
@@ -130,21 +127,14 @@ mstfa-ai/
 └── package.json
 ```
 
-## how to deploy on vercel
-
-1. push this to github (you're probably doing this rn)
-2. go to [vercel.com](https://vercel.com) and import the repo
-3. add your env variables
-4. click deploy
-5. done. you're literally live now 🎉
 
 ## contributing
 
-wanna help make MSTFA AI even more fire? PRs are welcome!! just don't break anything plssss 🥺
+wanna help make MSTFA AI even more fire? PRs are welcome!! just don't break anything plssss 
 
 ## license
 
-idk yet but vibes are free 💕
+idk yet but vibes are free 
 
 ---
 
@@ -152,6 +142,6 @@ idk yet but vibes are free 💕
 
 **made with 💖 and way too much ☕**
 
-🌸 MSTFA AI — she's not just an AI, she's a whole mood 🌸
+_By Mustafa_
 
 </div>

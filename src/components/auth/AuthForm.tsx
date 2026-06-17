@@ -1,13 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { getSupabase } from '@/lib/supabase'
 import PastelInput from '@/components/ui/PastelInput'
 
 export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
-  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -21,25 +19,33 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
     setError('')
 
     try {
+      const supabase = getSupabase()
+
       if (isLogin) {
-        const { error: authError } = await getSupabase().auth.signInWithPassword({
+        const { data, error: authError } = await supabase.auth.signInWithPassword({
           email,
           password,
         })
         if (authError) throw authError
+        if (!data.session) throw new Error('No session created')
       } else {
-        const { error: authError } = await getSupabase().auth.signUp({
+        const { data, error: authError } = await supabase.auth.signUp({
           email,
           password,
           options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
         })
         if (authError) throw authError
+        if (data.user && !data.session) {
+          setError('Check your email to confirm your account!')
+          setLoading(false)
+          return
+        }
       }
-      window.location.href = '/chat'
+
+      window.location.replace('/chat')
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Something went wrong'
       setError(message)
-    } finally {
       setLoading(false)
     }
   }

@@ -14,7 +14,7 @@ export default function PastelInput({ label, error, icon, className = '', ...pro
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-semibold text-purple-700/80 dark:text-purple-300/80 mb-1.5 pl-1">
+        <label className="block text-sm font-semibold text-purple-800 dark:text-purple-300/80 mb-1.5 pl-1">
           {label}
         </label>
       )}

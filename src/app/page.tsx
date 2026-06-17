@@ -77,14 +77,14 @@ export default function LandingPage() {
             <span className="text-6xl">🌸</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 dark:from-pink-300 dark:via-purple-300 dark:to-blue-300 bg-clip-text text-transparent mb-4 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 dark:from-pink-300 dark:via-purple-300 dark:to-blue-300 bg-clip-text text-transparent mb-4 leading-tight">
             MSTFA AI
           </h1>
 
-          <p className="text-lg md:text-xl text-purple-400/80 dark:text-purple-300/70 max-w-lg mx-auto mb-3 font-medium">
+          <p className="text-lg md:text-xl text-purple-700 dark:text-purple-300/70 max-w-lg mx-auto mb-3 font-medium">
             Your cute anime-style AI assistant
           </p>
-          <p className="text-sm text-purple-300/70 dark:text-purple-500/60 max-w-md mx-auto mb-10">
+          <p className="text-sm text-purple-500 dark:text-purple-500/60 max-w-md mx-auto mb-10">
             Friendly, warm, and always ready to help. Chat with MSTFA AI for conversations
             filled with personality and care
           </p>
@@ -119,7 +119,7 @@ export default function LandingPage() {
         </div>
       </main>
 
-      <footer className="relative z-10 text-center py-6 text-xs text-purple-300/60 dark:text-purple-600/40">
+      <footer className="relative z-10 text-center py-6 text-xs text-purple-500/70 dark:text-purple-600/40">
         MSTFA AI — Made with love
       </footer>
     </div>

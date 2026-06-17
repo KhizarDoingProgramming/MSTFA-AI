@@ -17,19 +17,17 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         isUser ? 'flex-row-reverse' : ''
       }`}
     >
-      {/* Avatar */}
       {!isUser && (
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-200 to-purple-200 flex items-center justify-center flex-shrink-0 shadow-md border border-white/60">
+        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-200 to-purple-200 dark:from-purple-700 dark:to-indigo-700 flex items-center justify-center flex-shrink-0 shadow-md border border-white/60 dark:border-purple-600/40">
           <span className="text-lg">🌸</span>
         </div>
       )}
 
-      {/* Message Content */}
       <div
         className={`max-w-[75%] lg:max-w-[65%] ${
           isUser
-            ? 'bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 text-purple-800 rounded-2xl rounded-br-sm px-4 py-3 shadow-md border border-white/40'
-            : 'glass-card text-purple-700 rounded-2xl rounded-bl-sm px-4 py-3'
+            ? 'bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 dark:from-purple-700 dark:via-indigo-700 dark:to-purple-600 text-purple-800 dark:text-purple-100 rounded-2xl rounded-br-sm px-4 py-3 shadow-md border border-white/40 dark:border-purple-500/20'
+            : 'glass-card text-purple-700 dark:text-purple-100 rounded-2xl rounded-bl-sm px-4 py-3'
         }`}
       >
         {isUser ? (

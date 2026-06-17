@@ -48,16 +48,16 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
     <div className="w-full max-w-md mx-auto">
       <div className="glass-card-strong p-8 md:p-10">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 flex items-center justify-center shadow-lg mb-4 animate-float overflow-hidden">
+          <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 dark:from-purple-700 dark:via-indigo-700 dark:to-purple-600 flex items-center justify-center shadow-lg mb-4 animate-float overflow-hidden">
             <img src="/logo.svg" alt="MSTFA AI" className="w-16 h-16" />
           </div>
-          <h1 className="text-2xl font-bold text-purple-800">
+          <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-200">
             {isLogin ? 'Welcome Back!' : 'Join MSTFA AI!'}
           </h1>
-          <p className="text-purple-400 mt-2 text-sm">
+          <p className="text-purple-400 dark:text-purple-400 mt-2 text-sm">
             {isLogin
-              ? 'So happy to see you again ✨'
-              : 'Create your account and start chatting 🌸'}
+              ? 'So happy to see you again'
+              : 'Create your account and start chatting'}
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
           />
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-2 rounded-xl">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-2 rounded-xl">
               {error}
             </div>
           )}
@@ -98,19 +98,19 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
                 {isLogin ? 'Logging in...' : 'Creating account...'}
               </span>
             ) : isLogin ? (
-              'Login ✨'
+              'Login'
             ) : (
-              'Sign Up 🌸'
+              'Sign Up'
             )}
           </button>
         </form>
 
         <div className="text-center mt-6">
-          <p className="text-sm text-purple-400">
+          <p className="text-sm text-purple-400 dark:text-purple-400">
             {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
             <Link
               href={isLogin ? '/signup' : '/login'}
-              className="text-purple-600 font-semibold hover:text-purple-800 transition-colors"
+              className="text-purple-600 dark:text-purple-300 font-semibold hover:text-purple-800 dark:hover:text-purple-100 transition-colors"
             >
               {isLogin ? 'Sign up' : 'Login'}
             </Link>

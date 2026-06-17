@@ -14,18 +14,18 @@ export default function PastelInput({ label, error, icon, className = '', ...pro
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-semibold text-purple-700/80 mb-1.5 pl-1">
+        <label className="block text-sm font-semibold text-purple-700/80 dark:text-purple-300/80 mb-1.5 pl-1">
           {label}
         </label>
       )}
       <div className="relative">
         {icon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-300">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-300 dark:text-purple-500">
             {icon}
           </div>
         )}
         <input
-          className={`glass-input w-full py-3 px-4 text-sm text-purple-900 placeholder-purple-300/60 font-medium ${icon ? 'pl-10' : ''} ${error ? 'border-red-300 focus:border-red-400' : ''} ${className}`}
+          className={`glass-input w-full py-3 px-4 text-sm text-purple-900 dark:text-purple-100 placeholder-purple-300/60 dark:placeholder-purple-500/50 font-medium ${icon ? 'pl-10' : ''} ${error ? 'border-red-300 dark:border-red-600 focus:border-red-400' : ''} ${className}`}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           {...props}

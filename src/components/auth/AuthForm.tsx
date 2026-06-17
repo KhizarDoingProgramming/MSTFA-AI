@@ -35,8 +35,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
         })
         if (authError) throw authError
       }
-      router.push('/chat')
-      router.refresh()
+      window.location.href = '/chat'
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Something went wrong'
       setError(message)
